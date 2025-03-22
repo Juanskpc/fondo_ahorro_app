@@ -1,0 +1,9 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-lg-4 text-center tile disabled-class" *ngFor="let ruta of rutasDashboard">
+            <div class="opcion" >
+                <img src="{{cdn}}images{{ruta.icono}}" (click)="navegarDashboard(ruta)">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.tile {
+    color: transparent;
+    font-size: 1.3em;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    color: #333;
+    position: relative;
+}
+
+.opcion:hover {
+    transform: scale(1.2);
+}
+
+.tile div {
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.tile img {
+    width: 80%;
+}

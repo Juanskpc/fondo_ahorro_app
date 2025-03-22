@@ -1,0 +1,92 @@
+<div class="row gx-0">
+    <div class="col-md-12">
+        <header class="banner">
+            <div class="logo">
+                <img src="{{cdn}}images/logoudenar.svg" class="img-logo">
+            </div>
+        </header>
+
+        <nav class="navbar1 navbarsin">
+            <div class="diagonal"></div>
+            <ul class="nav3 navbar-nav3">
+                <li class="iconosmenu">
+                    <a href="{{config.Login}}">
+                        <img src="{{cdn}}images/menu.svg" class="tam_icono">
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="nav4 navbar-nav4">
+                <li class="nav-item dropdown usermenudrop" dropdown placement="bottom right">
+                    <a class="mi-navlink" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false" dropdownToggle (click)="false">
+                        <span class="user-name">{{usuario?.Persona?.primer_nombre}} {{usuario?.Persona?.primer_apellido}}</span>
+                        <img src="{{cdn}}images/avatar.svg" class="iconodrop">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown" style="padding: 0 !important;">
+                        <li class="user-header">
+                            <img src="{{cdn}}images/avatar.svg" alt="User Image">
+                            <p class="fw-semibold">
+                                {{usuario?.Persona?.primer_nombre}} {{usuario?.Persona?.primer_apellido}}
+                                <span class="num_cedula">
+                                    <small>Usuario: {{usuario?.Persona?.num_identificacion}}</small>
+                                </span>
+                            </p>
+                        </li>
+                        <li class="user-footer d-flex justify-content-between">
+                            <button class="btn btn-primary btn-sm" (click)="cambiarContra()"
+                             style="font-size: 11px;">Cambiar contraseña</button>
+
+                            <button class="btn btn-danger btn-sm" (click)="cerrarSesion()"
+                             style="font-size: 11px;">Cerrar sesión</button>
+                        </li>
+                    </ul>
+                </li>
+                <!-- <li class="nav-item dropdown usermenudrop" dropdown placement="bottom right">
+                    <a class="mi-navlink" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false" dropdownToggle (click)="false">
+                        <span class="user-name">{{usuario.Persona.primer_nombre}} {{usuario.Persona.primer_apellido}}</span>
+                        <img src="{{cdn}}images/avatar.svg" class="iconodrop">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown" style="padding: 0 !important;">
+                        <li class="user-header">
+                            <img src="{{cdn}}images/avatar.svg" alt="User Image">
+                            <p class="fw-semibold">
+                                {{usuario.Persona.primer_nombre}} {{usuario.Persona.primer_apellido}}
+                                <span class="num_cedula">
+                                    <small>Usuario: {{usuario.Persona.num_identificacion}}</small>
+                                </span>
+                            </p>
+                        </li>
+                        <li class="user-footer d-flex justify-content-between">
+                            <button class="btn btn-primary btn-sm" (click)="cambiarContra()"
+                             style="font-size: 11px;">Cambiar contraseña</button>
+
+                            <button class="btn btn-danger btn-sm" (click)="cerrarSesion()"
+                             style="font-size: 11px;">Cerrar sesión</button>
+                        </li>
+                    </ul>
+                </li> -->
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="app-body">
+    <main>
+        <br>
+        <div class="container-fluid">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>
+
+<footer class="row py-2 mt-2 text-center fixed-bottom border-top">
+    <div class="col-md-12">
+        <span class="ml-auto footerb"><strong>SAPIENS</strong> - Sistema de Apoyo a Procesos Institucionales de Educacion
+            Superior.</span>
+        <span class="footera">&nbsp;&nbsp;Copyright &copy; {{year}} <a href="https://www.udenar.edu.co"
+            target="_blank">Universidad de Nariño</a>.</span>
+    </div>
+</footer> 
+

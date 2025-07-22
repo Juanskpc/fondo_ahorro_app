@@ -15,6 +15,7 @@ import { ServiceModule } from './app-core/services/services.module';
 import { tokenInterceptor } from './app-core/services/app-admin/seguridad/http-interceptors/auth.interceptor';
 import { JLayoutModule } from './containers/j-layout.module';
 import { AuthModule } from './views/auth/auth.module';
+import { AdminModule } from './views/fondo/admin.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthModule } from './views/auth/auth.module';
     AppRoutingModule,
     ServiceModule,
     JLayoutModule,
-    AuthModule
+    AuthModule,
+    AdminModule
   ],
   providers: [
     provideHttpClient

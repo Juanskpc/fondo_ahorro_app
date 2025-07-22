@@ -24,10 +24,10 @@ const routes: Routes = [
         path: 'default',
         loadChildren: () => import('../views/default/default.module').then( m => m.DefaultModule)
     },
-    {
-        path: '**',
-        redirectTo: ''
-    }
+    // {
+    //     path: '**',
+    //     redirectTo: ''
+    // }
 ]
 
 @NgModule({

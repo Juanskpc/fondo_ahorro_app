@@ -73,20 +73,20 @@ export class JLayoutSinComponent implements OnInit {
 
     cerrarSesion() {
 
-        this.serviceUsuario.cerrarSesion()
-            .pipe(
-                catchError((error) => {
-                    console.error(error);
-                    this.serviceCookie.deleteAll();
-                    window.location.href = config.Login;
-                    return of([])
-                })
-            )
-            .subscribe((res) => {
-                this.serviceCookie.deleteAll();
-                localStorage.clear();
-                window.location.href = config.Login;
-            });
+        // this.serviceUsuario.cerrarSesion()
+        //     .pipe(
+        //         catchError((error) => {
+        //             console.error(error);
+        //             this.serviceCookie.deleteAll();
+        //             window.location.href = config.Login;
+        //             return of([])
+        //         })
+        //     )
+        //     .subscribe((res) => {
+        //         this.serviceCookie.deleteAll();
+        //         localStorage.clear();
+        //         window.location.href = config.Login;
+        //     });
     }
 
 

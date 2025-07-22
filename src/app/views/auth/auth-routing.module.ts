@@ -5,7 +5,7 @@ import { JLayoutSinComponent } from '../../containers/j-layout-sin';
 import { RestablecerPwComponent } from './restablecer-pw/restablecer-pw.component';
 
 const routes: Routes = [
-    {
+    {   
         path: '',
         component: JLayoutSinComponent,
         children: [
@@ -14,7 +14,7 @@ const routes: Routes = [
                 component: LoginComponent
             },
             {
-                path: 'restablecer-contraseña',
+                path: 'restablecer',
                 component: RestablecerPwComponent
             }
         ]

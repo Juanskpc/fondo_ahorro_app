@@ -17,6 +17,12 @@ import { JLayoutModule } from './containers/j-layout.module';
 import { AuthModule } from './views/auth/auth.module';
 import { AdminModule } from './views/fondo/admin.module';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,10 @@ import { AdminModule } from './views/fondo/admin.module';
   providers: [
     provideHttpClient
     (withInterceptors([tokenInterceptor])),
-    // { provide: LocationStrategy, useClass: PathLocationStrategy },
+    { provide: LOCALE_ID, useValue: 'es'
+      // LocationStrategy, 
+      // useClass: PathLocationStrategy 
+    },
   ],
   bootstrap: [AppComponent]
 })

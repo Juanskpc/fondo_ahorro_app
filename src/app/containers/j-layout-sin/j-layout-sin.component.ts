@@ -88,6 +88,4 @@ export class JLayoutSinComponent implements OnInit {
         //         window.location.href = config.Login;
         //     });
     }
-
-
 }

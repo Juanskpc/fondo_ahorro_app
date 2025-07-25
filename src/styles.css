@@ -66,7 +66,7 @@
 .diagonal {
     padding: 0.5rem 0.5rem !important;
     height: 30px;
-    background: #14572a !important;
+    background: #1F3B4D !important;
     float: left;
     position: relative;
     font-size: 11px;
@@ -79,16 +79,16 @@
     right: 0%;
     top: 0px;
     border-top: 15px solid transparent;
-    border-left: 15px solid #14572a;
+    border-left: 15px solid #1F3B4D;
     border-right: 15px solid transparent;
-    border-bottom: 15px solid #14572a;
-    background-color: #fbb03b;
+    border-bottom: 15px solid #1F3B4D;
+    background-color: #1F3B4D;
 }
 
 .diagonal2 {
     padding-top: 6px !important;
     height: 30px;
-    background: #14572a !important;
+    background: #1F3B4D !important;
     float: left;
     position: relative;
     font-size: 11px;
@@ -101,10 +101,10 @@
     right: 0%;
     top: 0px;
     border-top: 15px solid transparent;
-    border-left: 15px solid #14572a;
+    border-left: 15px solid #1F3B4D;
     border-right: 15px solid transparent;
-    border-bottom: 15px solid #14572a;
-    background-color: #fbb03b;
+    border-bottom: 15px solid #1F3B4D;
+    background-color: #1F3B4D;
 }
 
 .navbar-nav3 {
@@ -804,4 +804,73 @@ a.sidebar-link:hover {
 
 .btnSave:hover {
     border: 1px solid green !important;
+}
+
+/* Estilos generales para la financiera */
+.banner {
+    background-color: #005f87; /* Azul financiero */
+    color: white;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+.company-info {
+    margin-left: 20px;
+}
+
+.company-info h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.company-info .founded {
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 5px 0 0;
+}
+
+.navbar1 {
+    background-color: #1F3B4D; /* Azul más oscuro */
+    color: white;
+}
+
+.diagonal {
+    height: 3px;
+    background: linear-gradient(90deg, #1F3B4D, #00a8e8, #1F3B4D);
+}
+
+.footerb {
+    color: #005f87;
+    font-weight: 500;
+}
+
+.footera {
+    color: #666;
+}
+
+.footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Botones con temática financiera */
+.btn-primary {
+    background-color: #00a8e8;
+    border-color: #0088c7;
+}
+
+.btn-primary:hover {
+    background-color: #0088c7;
+    border-color: #006da4;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #c0392b;
+}
+
+.p-panel .p-panel-header {
+    background-color: #319A87;
 }

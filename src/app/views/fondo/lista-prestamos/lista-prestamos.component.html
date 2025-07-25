@@ -1,1 +1,55 @@
-<p>lista-prestamos works!</p>
+<p-panel>
+
+    <ng-template pTemplate="header">
+        <img src="{{cdn}}images/financiacion_proy_inverse.svg" alt="" class="icono-lateral">
+        &nbsp; <span class="text-white">Listado de préstamos </span>
+    </ng-template>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-8 pull-right d-flex justify-content-end">
+            <button type="button" class="btn btn-success">
+                <img src="{{cdn}}images/plan_desarrollo_inverse.svg" alt="" class="icono-lateral">
+                Agregar nuevo préstamo
+            </button>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <input type="text" class="form-control" placeholder="Buscar por nombre / cédula">
+        </div>
+    </div>
+
+    <br>
+
+    <p-table [value]="lstPrestamos">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">#</th>
+                <th>Nombre asociado</th>
+                <th>Valor</th>
+                <th>Fecha inicio del préstamo</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-prestamo let-rowIndex="rowIndex">
+            <tr>
+                <td class="text-center">{{rowIndex + 1}}</td>
+                <td>{{prestamo.nombre_asociado}}</td>
+                <td>{{'$' + (prestamo.valor_prestamo | number:'1.0-0')}}</td>
+                <td>{{prestamo.fecha_inicio | date: 'fullDate'}}</td>
+                <td class="text-center">
+                    <p-tag severity="success" value="ACTIVO"      [rounded]="true" *ngIf="prestamo.estado == 'A'"/>
+                    <p-tag severity="secondary"    value="FINALIZADO"  [rounded]="true" *ngIf="prestamo.estado == 'P'"/>
+                    <p-tag severity="info" value="SIN DEFINIR" [rounded]="true" *ngIf="prestamo.estado != 'P' && prestamo.estado != 'A'"/>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-success" pTooltip="Ver datos">
+                        <img src="{{cdn}}images/ver_blanco.svg" alt="" class="icono-lateral">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</p-panel>

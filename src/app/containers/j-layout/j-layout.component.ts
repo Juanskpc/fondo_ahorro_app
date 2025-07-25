@@ -69,32 +69,32 @@ export class JLayoutComponent implements OnInit {
 
         this.year = new Date(Date.now()).getFullYear();
 
-        this.serviceUsuario.obtenerInformacionUsuario()
-            .pipe(
-                catchError(({ error }) => {
-                    this.serviceMensaje.enviarMensaje('Error', error.error, 'e')
-                    console.error('msg error', error);
-                    // window.location.href = config.Login;
-                    return of([])
-                })
-            )
-            .subscribe((usuario) => {
-                this.usuario = usuario;
-                console.log('usuario ->', this.usuario);
-            })
+        // this.serviceUsuario.obtenerInformacionUsuario()
+        //     .pipe(
+        //         catchError(({ error }) => {
+        //             this.serviceMensaje.enviarMensaje('Error', error.error, 'e')
+        //             console.error('msg error', error);
+        //             // window.location.href = config.Login;
+        //             return of([])
+        //         })
+        //     )
+        //     .subscribe((usuario) => {
+        //         this.usuario = usuario;
+        //         console.log('usuario ->', this.usuario);
+        //     })
 
-        this.serviceUsuario.obtenerRutas()
-            .pipe(
-                catchError(({ error }) => {
-                    this.serviceMensaje.enviarMensaje('Error', error.error, 'e')
-                    console.error('msg error', error);
-                    return of([])
-                })
-            )
-            .subscribe((res) => {
-                this.rutasSidebar = res
-                console.log('rutas dash -> ', this.rutasSidebar);
-            })
+        // this.serviceUsuario.obtenerRutas()
+        //     .pipe(
+        //         catchError(({ error }) => {
+        //             this.serviceMensaje.enviarMensaje('Error', error.error, 'e')
+        //             console.error('msg error', error);
+        //             return of([])
+        //         })
+        //     )
+        //     .subscribe((res) => {
+        //         this.rutasSidebar = res
+        //         console.log('rutas dash -> ', this.rutasSidebar);
+        //     })
     }
 
     cambiarContra() {

@@ -5,6 +5,7 @@ export default {
     matriUrl: 'matriculas',
     ApiUrl: 'http://localhost:3000',
     segUrl: 'seguridad',
+    ahorroUrl: 'ahorro',
     Login: 'http://localhost:6008/login',
     home: 'http://localhost:4002',
     cdn: 'https://sapiens.udenar.edu.co:3026/cdn/',

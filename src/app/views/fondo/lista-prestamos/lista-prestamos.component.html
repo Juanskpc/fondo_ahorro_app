@@ -35,7 +35,7 @@
         <ng-template pTemplate="body" let-prestamo let-rowIndex="rowIndex">
             <tr>
                 <td class="text-center">{{rowIndex + 1}}</td>
-                <td>{{prestamo.nombre_asociado}}</td>
+                <td>{{prestamo.AsociPersona.GenerPersona.primer_nombre}} {{prestamo.AsociPersona.GenerPersona.primer_apellido}}</td>
                 <td>{{'$' + (prestamo.valor_prestamo | number:'1.0-0')}}</td>
                 <td>{{prestamo.fecha_inicio | date: 'fullDate'}}</td>
                 <td class="text-center">

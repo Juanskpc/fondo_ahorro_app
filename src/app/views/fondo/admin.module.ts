@@ -11,6 +11,8 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel'
 import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { TagModule } from 'primeng/tag';
         PanelModule,
         TooltipModule,
         TagModule,
-                
+        DialogModule,
+        AutoCompleteModule,
+              
     ]
 })
 export class AdminModule { }

@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-8 pull-right d-flex justify-content-end">
-            <button type="button" class="btn btn-success">
+            <button type="button" class="btn btn-success" (click)="agregarPrestamo()">
                 <img src="{{cdn}}images/plan_desarrollo_inverse.svg" alt="" class="icono-lateral">
                 Agregar nuevo préstamo
             </button>
@@ -53,3 +53,45 @@
     </p-table>
 
 </p-panel>
+
+<p-dialog header="Nuevo prestamo"
+    [(visible)]="mostrarNuevoPrestamo" 
+    [modal]="true" 
+    [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+
+    <span class="text-secondary mb-5">Ingresa la siguiente información para registrar el préstamo.</span>
+
+    <form formGroup="frmPrestamo">
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Asociado</label>
+                <p-autoComplete 
+                formControlName="asociado"
+                [suggestions]="lstAsociados" 
+                (completeMethod)="buscarAsociadoByNombre($event)" />
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Valor del préstamo</label>
+                <input type="number" formControlName="valorPrestamo" class="form-control">
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Interés</label>
+                <input type="number" formControlName="interes" class="form-control">
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Fecha inicial</label>
+                <input type="date" formControlName="fecInicio" class="form-control">
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Fecha final</label>
+                <input type="date" formControlName="fecFin" class="form-control">
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
+                <label for="">Descripción</label>
+                <input type="text" formControlName="descripcion" class="form-control">
+            </div>
+        </div>
+    </form>
+</p-dialog>

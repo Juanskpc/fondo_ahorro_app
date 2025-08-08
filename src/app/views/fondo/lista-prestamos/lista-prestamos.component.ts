@@ -3,6 +3,8 @@ import config from '../../../app-core/services/app-admin/configuracion/config';
 import { ListadoPrestamosService } from '../../../app-core/services/lista-prestamos/listado-prestamos.service';
 import { firstValueFrom } from 'rxjs';
 import { MensajeService } from '../../../app-core/services/mensajes/mensaje.service';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-lista-prestamos',
@@ -20,18 +22,36 @@ export class ListaPrestamosComponent implements OnInit {
      * Listado de prestamos
      */
     lstPrestamos: any = [];
-    // lstPrestamos: any = [
-    //     { id_prestamo: 1, nombre_asociado: 'IMELDA NARVAEZ', id_asociado: 1,    valor_prestamo: 2000000, fecha_inicio: '2025-05-01T08:00', estado: 'A' },
-    //     { id_prestamo: 2, nombre_asociado: 'MARCELA DIAZ', id_asociado: 1,      valor_prestamo: 5000000, fecha_inicio: '2025-07-01T15:00', estado: 'A' },
-    //     { id_prestamo: 3, nombre_asociado: 'LUZ MARIA JIMENEZ', id_asociado: 1, valor_prestamo: 800000,  fecha_inicio: '2025-02-01T20:00', estado: 'P' },
-    //     { id_prestamo: 4, nombre_asociado: 'IRMA DOLORES', id_asociado: 1,      valor_prestamo: 9000000, fecha_inicio: '2025-01-01T11:00', estado: 'P' }
-    // ];
+    
+    /**
+     * Mostrar/ocultar modal para nuevo prestamo
+     */
+    mostrarNuevoPrestamo: boolean = false;
+
+    /**
+     * Asociado seleccionado para crear un prestamo
+     */
+    asociadoSelect!: string;
+
+
+    lstAsociados: any = [];
+
+
+    frmPrestamo!: FormGroup;
 
     constructor(
         private serviceListaPrestamo: ListadoPrestamosService,
-        private serviceMensaje: MensajeService
+        private serviceMensaje: MensajeService,
+        private fb: FormBuilder
     ){
-
+        this.frmPrestamo = this.fb.group({
+            asociado: ['', [Validators.required]],
+            valorPrestamo: ['', [Validators.required, Validators.min(1)]],
+            interes: ['', [Validators.required]],
+            fecInicio: ['', [Validators.required]],
+            fecFin: ['', [Validators.required]],
+            descripcion: ['']
+        })
     }
 
     async ngOnInit() {
@@ -41,6 +61,22 @@ export class ListaPrestamosComponent implements OnInit {
         } catch (error) {
             console.log(error)
             this.serviceMensaje.enviarMensaje('Error','Ha ocurrido un error al obtener los datos', 'e');
+        }
+    }
+
+    agregarPrestamo(){
+        try {
+            this.mostrarNuevoPrestamo = true;
+        } catch (error) {
+            
+        }
+    }
+
+    buscarAsociadoByNombre(event: AutoCompleteCompleteEvent){
+        try {
+            
+        } catch (error) {
+            
         }
     }
 }

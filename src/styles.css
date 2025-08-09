@@ -874,3 +874,11 @@ a.sidebar-link:hover {
 .p-panel .p-panel-header {
     background-color: #319A87;
 }
+
+ul {
+    padding-left: 0px !important;
+}
+
+.swal2-container {
+  z-index: 99999 !important;
+}

@@ -13,6 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -31,7 +32,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         TagModule,
         DialogModule,
         AutoCompleteModule,
-              
+        ReactiveFormsModule
     ]
 })
 export class AdminModule { }

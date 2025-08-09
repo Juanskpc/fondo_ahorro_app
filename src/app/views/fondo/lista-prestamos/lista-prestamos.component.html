@@ -25,8 +25,9 @@
             <tr>
                 <th class="text-center">#</th>
                 <th>Nombre asociado</th>
-                <th>Valor</th>
+                <th>Valor (interés)</th>
                 <th>Fecha inicio del préstamo</th>
+                <th>Descripción</th>
                 <th>Estado</th>
                 <th>Opciones</th>
             </tr>
@@ -36,8 +37,9 @@
             <tr>
                 <td class="text-center">{{rowIndex + 1}}</td>
                 <td>{{prestamo.AsociPersona.GenerPersona.primer_nombre}} {{prestamo.AsociPersona.GenerPersona.primer_apellido}}</td>
-                <td>{{'$' + (prestamo.valor_prestamo | number:'1.0-0')}}</td>
+                <td>{{'$' + (prestamo.valor_prestamo | number:'1.0-0')}} ({{prestamo.interes}}%)</td>
                 <td>{{prestamo.fecha_inicio | date: 'fullDate'}}</td>
+                <td>{{prestamo.descripcion ? prestamo.descripcion : 'Sin descripción'}}</td>
                 <td class="text-center">
                     <p-tag severity="success" value="ACTIVO"      [rounded]="true" *ngIf="prestamo.estado == 'A'"/>
                     <p-tag severity="secondary"    value="FINALIZADO"  [rounded]="true" *ngIf="prestamo.estado == 'P'"/>
@@ -62,31 +64,73 @@
 
     <span class="text-secondary mb-5">Ingresa la siguiente información para registrar el préstamo.</span>
 
-    <form formGroup="frmPrestamo">
+    <form [formGroup]="frmPrestamo">
 
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Asociado</label>
                 <p-autoComplete 
-                formControlName="asociado"
+                formControlName="id_asociado"
                 [suggestions]="lstAsociados" 
-                (completeMethod)="buscarAsociadoByNombre($event)" />
+                (completeMethod)="buscarAsociadoByNombre($event)"
+                optionLabel="nombre_completo"
+                [ngClass]="{ 'is-invalid': (prestamo['id_asociado'].touched || submitted) && prestamo['id_asociado'].errors }">
+                
+                    <ng-template let-asociado pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{asociado.nombre_completo}}</span>
+                            <hr style="margin: 0% !important;">
+                            <span class="fs-6 fst-italic" style="font-size: small !important;">C.C {{asociado.num_identificacion}}</span>
+                        </div>
+                    </ng-template>
+
+                </p-autoComplete>
+
+
+                <div *ngIf="prestamo['id_asociado'].errors && (prestamo['id_asociado'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="prestamo['id_asociado'].errors['required']">Campo obligatorio</span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Valor del préstamo</label>
-                <input type="number" formControlName="valorPrestamo" class="form-control">
+                <input type="number" formControlName="valor_prestamo" class="form-control"
+                    [ngClass]="{ 'is-invalid': (prestamo['valor_prestamo'].touched || submitted) && prestamo['valor_prestamo'].errors }">
+
+                <div *ngIf="prestamo['valor_prestamo'].errors && (prestamo['valor_prestamo'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="prestamo['valor_prestamo'].errors['required']">Campo obligatorio</span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Interés</label>
-                <input type="number" formControlName="interes" class="form-control">
+                <input type="number" formControlName="interes" class="form-control"
+                    [ngClass]="{ 'is-invalid': (prestamo['interes'].touched || submitted) && prestamo['interes'].errors }">
+
+                <div *ngIf="prestamo['interes'].errors && (prestamo['interes'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="prestamo['interes'].errors['required']">Campo obligatorio</span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Fecha inicial</label>
-                <input type="date" formControlName="fecInicio" class="form-control">
+                <input type="date" formControlName="fecha_inicio" class="form-control"
+                    [ngClass]="{ 'is-invalid': (prestamo['fecha_inicio'].touched || submitted) && prestamo['fecha_inicio'].errors }">
+
+                <div *ngIf="prestamo['fecha_inicio'].errors && (prestamo['fecha_inicio'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="prestamo['fecha_inicio'].errors['required']">Campo obligatorio</span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Fecha final</label>
-                <input type="date" formControlName="fecFin" class="form-control">
+                <input type="date" formControlName="fecha_fin" class="form-control"
+                    [ngClass]="{ 'is-invalid': (prestamo['fecha_fin'].touched || submitted) && prestamo['fecha_fin'].errors }">
+
+                <div *ngIf="prestamo['fecha_fin'].errors && (prestamo['fecha_fin'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="prestamo['fecha_fin'].errors['required']">Campo obligatorio</span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
                 <label for="">Descripción</label>
@@ -94,4 +138,18 @@
             </div>
         </div>
     </form>
+
+    <div class="row pt-3">
+        <div class="col-12 d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-success" (click)="guardarPrestamo()">
+                <img src="{{cdn}}images/formulacion_proyecto_inverse.svg" alt="" class="icono-lateral">
+                Guardar
+            </button>
+            
+            <button type="button" class="btn btn-danger" (click)="mostrarNuevoPrestamo = false">
+                <img src="{{cdn}}images/plan_desarrollo_inverse.svg" alt="" class="icono-lateral">
+                Cerrar
+            </button>
+        </div>
+    </div>
 </p-dialog>

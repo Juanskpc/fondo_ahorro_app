@@ -19,4 +19,14 @@ export class ListadoPrestamosService {
         return this.http.get(ruta);
     }
 
+    getAsociadosByName(cadena: string): Observable<any> {
+        let ruta = [this.ApiUrl, 'getAsociadosByName', cadena].join('/');
+        return this.http.get(ruta);
+    }
+
+    createNuevoPrestamo(prestamo: any): Observable<any> {
+        let ruta = [this.ApiUrl, 'createNuevoPrestamo'].join('/');
+        return this.http.post(ruta, {"prestamo": prestamo});
+    }
+
 }

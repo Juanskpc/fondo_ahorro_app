@@ -27,6 +27,11 @@ export class ListaPrestamosComponent implements OnInit {
      * Mostrar/ocultar modal para nuevo prestamo
      */
     mostrarNuevoPrestamo: boolean = false;
+    
+    /**
+     * Mostrar/ocultar modal para nuevo prestamo
+     */
+    mostrarDatosPrestamo: boolean = false;
 
     /**
      * Asociado seleccionado para crear un prestamo
@@ -44,11 +49,20 @@ export class ListaPrestamosComponent implements OnInit {
      */
     submitted: boolean = false;
 
+    prestamoSelect: any;
+
+    objPrePrestamo: any;
+
     constructor(
         private serviceListaPrestamo: ListadoPrestamosService,
         private serviceMensaje: MensajeService,
         private fb: FormBuilder
     ){
+        this.objPrePrestamo = {
+            interes: 0,
+            valorCapital: 0,
+            totalPagar: 0
+        }
     }
 
     // Getter para obtener los controles del formulario frmPrestamo
@@ -62,7 +76,7 @@ export class ListaPrestamosComponent implements OnInit {
             valor_prestamo: ['', [Validators.required, Validators.min(1)]],
             interes: ['', [Validators.required]],
             fecha_inicio: ['', [Validators.required]],
-            fecha_fin: ['', [Validators.required]],
+            cuotas: ['', [Validators.required]],
             descripcion: ['']
         })
             await this.consultarListadoPrestamos();
@@ -76,6 +90,13 @@ export class ListaPrestamosComponent implements OnInit {
     agregarPrestamo(){
         try {
             this.mostrarNuevoPrestamo = true;
+            this.objPrePrestamo = {
+                interes: 0,
+                valorCapital: 0,
+                totalPagar: 0
+            }
+            this.frmPrestamo.reset();
+            this.submitted = false;
         } catch (error) {
             
         }
@@ -116,6 +137,48 @@ export class ListaPrestamosComponent implements OnInit {
         } catch (error) {
             console.log(error)
             this.serviceMensaje.enviarMensaje('Ups', 'Ha ocurrido un error al obtener los datos', 'e');
+        }
+    }
+
+    async eliminarPrestamo(prestamo: any){
+        try {
+            let mensaje = await this.serviceMensaje.mensajeConfimacion('¿Esta seguro que desea eliminar el préstamo de ' + prestamo.AsociPersona.GenerPersona.primer_nombre + ' ' + prestamo.AsociPersona.GenerPersona.primer_apellido);
+
+            await firstValueFrom(this.serviceListaPrestamo.inactivarPrestamo(prestamo));
+            await this.consultarListadoPrestamos();
+        } catch (error: any) {
+            if(error.cancelado) return;
+            this.serviceMensaje.enviarMensaje('Ups', 'Ha ocurrido un error al eliminar los datos', 'e');
+            console.log(error);            
+        }
+    }
+
+    verDatosPrestamo(prestamo: any){
+        this.mostrarDatosPrestamo = true;
+
+        this.prestamoSelect = prestamo;
+
+        this.frmPrestamo.get('valor_prestamo')?.setValue(prestamo.valor_prestamo);
+        this.frmPrestamo.get('interes')?.setValue(prestamo.interes);
+        this.frmPrestamo.get('fecha_inicio')?.setValue(prestamo.fecha_inicio.substring(0, 10));
+        this.frmPrestamo.get('cuotas')?.setValue(prestamo.cuotas.substring(0, 10));
+        this.frmPrestamo.get('descripcion')?.setValue(prestamo.descripcion);
+
+        
+    }
+
+    previsualizarPrestamo(){
+        let valorPrestamo = this.frmPrestamo.value.valor_prestamo;
+        let interes = this.frmPrestamo.value.interes;
+        let cuotas = this.frmPrestamo.value.cuotas;
+
+        console.log(valorPrestamo, interes, cuotas)
+        if(valorPrestamo && cuotas && interes){
+            this.objPrePrestamo.interes = Math.floor((valorPrestamo) * ( (interes) / 100));
+            this.objPrePrestamo.cuotaMes = Math.floor((valorPrestamo) / (cuotas) + this.objPrePrestamo.interes);
+            this.objPrePrestamo.totalPagar = Math.floor((valorPrestamo) + (cuotas * this.objPrePrestamo.interes));
+
+            console.log('this.objPrePrestamo --> ', this.objPrePrestamo)
         }
     }
 }

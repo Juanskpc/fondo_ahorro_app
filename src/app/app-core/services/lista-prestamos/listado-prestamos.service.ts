@@ -29,4 +29,9 @@ export class ListadoPrestamosService {
         return this.http.post(ruta, {"prestamo": prestamo});
     }
 
+    inactivarPrestamo(prestamo: any): Observable<any> {
+        let ruta = [this.ApiUrl, 'inactivarPrestamo'].join('/');
+        return this.http.put(ruta, {"prestamo": prestamo});
+    }
+
 }

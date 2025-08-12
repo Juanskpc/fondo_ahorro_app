@@ -22,16 +22,21 @@ export class ListaPrestamosComponent implements OnInit {
      * Listado de prestamos
      */
     lstPrestamos: any = [];
-    
+
     /**
      * Mostrar/ocultar modal para nuevo prestamo
      */
     mostrarNuevoPrestamo: boolean = false;
-    
+
+    /**
+     * Mostrar/ocultar modal para abonar cuota
+     */
+    mostrarDatosPrestamo: boolean = false;
+
     /**
      * Mostrar/ocultar modal para nuevo prestamo
      */
-    mostrarDatosPrestamo: boolean = false;
+    mostrarAbonarCuota: boolean = false;
 
     /**
      * Asociado seleccionado para crear un prestamo
@@ -53,11 +58,15 @@ export class ListaPrestamosComponent implements OnInit {
 
     objPrePrestamo: any;
 
+    frmAbono!: FormGroup;
+
+    abonosEliminar?: any [];
+
     constructor(
         private serviceListaPrestamo: ListadoPrestamosService,
         private serviceMensaje: MensajeService,
         private fb: FormBuilder
-    ){
+    ) {
         this.objPrePrestamo = {
             interes: 0,
             valorCapital: 0,
@@ -66,28 +75,35 @@ export class ListaPrestamosComponent implements OnInit {
     }
 
     // Getter para obtener los controles del formulario frmPrestamo
-    get prestamo () { return this.frmPrestamo.controls }
+    get prestamo() { return this.frmPrestamo.controls }
+
+    // Getter para obtener los controles del formulario frmAbono
+    get abono() { return this.frmAbono.controls }
 
     async ngOnInit() {
         try {
-            
-        this.frmPrestamo = this.fb.group({
-            id_asociado: ['', [Validators.required]],
-            valor_prestamo: ['', [Validators.required, Validators.min(1)]],
-            interes: ['', [Validators.required]],
-            fecha_inicio: ['', [Validators.required]],
-            cuotas: ['', [Validators.required]],
-            descripcion: ['']
-        })
+            this.frmAbono = this.fb.group({
+                valor_abono: ['', Validators.required],
+                descripcion: ['', [Validators.required, Validators.maxLength(30)]]
+            })
+
+            this.frmPrestamo = this.fb.group({
+                id_asociado: ['', [Validators.required]],
+                valor_prestamo: ['', [Validators.required, Validators.min(1)]],
+                interes: ['', [Validators.required]],
+                fecha_inicio: ['', [Validators.required]],
+                cuotas: ['', [Validators.required]],
+                descripcion: ['']
+            })
             await this.consultarListadoPrestamos();
             console.log('this.lstPrestamos', this.lstPrestamos)
         } catch (error) {
             console.log(error)
-            this.serviceMensaje.enviarMensaje('Error','Ha ocurrido un error al obtener los datos', 'e');
+            this.serviceMensaje.enviarMensaje('Error', 'Ha ocurrido un error al obtener los datos', 'e');
         }
     }
 
-    agregarPrestamo(){
+    agregarPrestamo() {
         try {
             this.mostrarNuevoPrestamo = true;
             this.objPrePrestamo = {
@@ -98,27 +114,27 @@ export class ListaPrestamosComponent implements OnInit {
             this.frmPrestamo.reset();
             this.submitted = false;
         } catch (error) {
-            
+
         }
     }
 
-    async buscarAsociadoByNombre(event: AutoCompleteCompleteEvent){
+    async buscarAsociadoByNombre(event: AutoCompleteCompleteEvent) {
         try {
             let cadena = event.query.toString().toUpperCase();
             this.lstAsociados = await firstValueFrom(this.serviceListaPrestamo.getAsociadosByName(cadena));
             console.log('busqueda por termino ->', this.lstAsociados)
         } catch (error) {
-            
+
         }
     }
-    
-    async guardarPrestamo(){
+
+    async guardarPrestamo() {
         try {
             console.log(this.frmPrestamo.value)
             this.submitted = true;
-            
-            if(!this.frmPrestamo.valid) return;
-            
+
+            if (!this.frmPrestamo.valid) return;
+
             this.frmPrestamo.value.id_asociado = this.frmPrestamo.value.id_asociado.AsociPersonas[0].id_asociado;
             await firstValueFrom(this.serviceListaPrestamo.createNuevoPrestamo(this.frmPrestamo.value));
 
@@ -131,7 +147,7 @@ export class ListaPrestamosComponent implements OnInit {
         }
     }
 
-    async consultarListadoPrestamos(){
+    async consultarListadoPrestamos() {
         try {
             this.lstPrestamos = await firstValueFrom(this.serviceListaPrestamo.getListadoPrestamos());
         } catch (error) {
@@ -140,20 +156,20 @@ export class ListaPrestamosComponent implements OnInit {
         }
     }
 
-    async eliminarPrestamo(prestamo: any){
+    async eliminarPrestamo(prestamo: any) {
         try {
             let mensaje = await this.serviceMensaje.mensajeConfimacion('¿Esta seguro que desea eliminar el préstamo de ' + prestamo.AsociPersona.GenerPersona.primer_nombre + ' ' + prestamo.AsociPersona.GenerPersona.primer_apellido);
 
             await firstValueFrom(this.serviceListaPrestamo.inactivarPrestamo(prestamo));
             await this.consultarListadoPrestamos();
         } catch (error: any) {
-            if(error.cancelado) return;
+            if (error.cancelado) return;
             this.serviceMensaje.enviarMensaje('Ups', 'Ha ocurrido un error al eliminar los datos', 'e');
-            console.log(error);            
+            console.log(error);
         }
     }
 
-    verDatosPrestamo(prestamo: any){
+    verDatosPrestamo(prestamo: any) {
         this.mostrarDatosPrestamo = true;
 
         this.prestamoSelect = prestamo;
@@ -164,21 +180,69 @@ export class ListaPrestamosComponent implements OnInit {
         this.frmPrestamo.get('cuotas')?.setValue(prestamo.cuotas.substring(0, 10));
         this.frmPrestamo.get('descripcion')?.setValue(prestamo.descripcion);
 
-        
+
     }
 
-    previsualizarPrestamo(){
+    previsualizarPrestamo() {
         let valorPrestamo = this.frmPrestamo.value.valor_prestamo;
         let interes = this.frmPrestamo.value.interes;
         let cuotas = this.frmPrestamo.value.cuotas;
 
         console.log(valorPrestamo, interes, cuotas)
-        if(valorPrestamo && cuotas && interes){
-            this.objPrePrestamo.interes = Math.floor((valorPrestamo) * ( (interes) / 100));
+        if (valorPrestamo && cuotas && interes) {
+            this.objPrePrestamo.interes = Math.floor((valorPrestamo) * ((interes) / 100));
             this.objPrePrestamo.cuotaMes = Math.floor((valorPrestamo) / (cuotas) + this.objPrePrestamo.interes);
             this.objPrePrestamo.totalPagar = Math.floor((valorPrestamo) + (cuotas * this.objPrePrestamo.interes));
 
             console.log('this.objPrePrestamo --> ', this.objPrePrestamo)
         }
+    }
+
+    abonarCuota(prestamo: any) {
+        this.prestamoSelect = prestamo;
+        console.log('this.prestamoSelect -> ', this.prestamoSelect);
+
+        this.frmAbono.reset();
+        this.submitted = false;
+        this.mostrarAbonarCuota = true;
+    }
+
+    async guardarAbono(){
+        try {
+            this.submitted = true;
+            if(!this.frmAbono.valid) return;
+
+            let objAbono = {
+                id_prestamo: this.prestamoSelect.id_prestamo,
+                valor_abono: this.frmAbono.value.valor_abono,
+                descripcion: this.frmAbono.value.descripcion,
+                id_persona: 1 // Validar al traer info del usuario logeado
+            }
+
+            await firstValueFrom(this.serviceListaPrestamo.createAbonoPrestamo(objAbono));
+
+            await this.consultarListadoPrestamos();
+            this.mostrarAbonarCuota = false;
+            this.serviceMensaje.enviarMensaje('¡Bien!', 'El abono se ha guardado correctamente', 's');
+        } catch (error) {
+            console.log(error);
+            this.serviceMensaje.enviarMensaje('Ups', 'Ha ocurrido un error al guardar los datos', 'e');
+        }
+    }
+
+    async eliminarAbono(index: number, idAbono: number){
+        try {
+            let mensaje = await this.serviceMensaje.mensajeConfimacion('¿Está seguro que desea eliminar el registro?');
+
+            this.prestamoSelect.AsociAbonos.splice(index, 1);
+            await firstValueFrom(this.serviceListaPrestamo.inactivarAbono(idAbono));
+
+            this.serviceMensaje.enviarMensaje('¡Bien!', 'El abono se ha eliminado correctamente', 's');
+        } catch (error: any) {
+            if(error.cancelado) return;
+            console.log(error);
+            this.serviceMensaje.enviarMensaje('Ups', 'Ha ocurrido un error al borrar los datos', 'e');
+        }
+        this.abonosEliminar?.push(index);
     }
 }

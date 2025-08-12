@@ -57,6 +57,11 @@
                         (click)="eliminarPrestamo(prestamo)">
                         <img src="{{cdn}}images/eliminar.svg" alt="" class="icono-lateral">
                     </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-secondary" pTooltip="Abonar cuota"
+                        (click)="abonarCuota(prestamo)">
+                        <img src="{{cdn}}images/Identificacion_proyecto_inverse.svg" alt="" class="icono-lateral">
+                    </button>
                 </td>
             </tr>
         </ng-template>
@@ -88,7 +93,7 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
-                <label for="">Interés</label>
+                <label for="">Interés (%)</label>
                 <input type="number" formControlName="interes" class="form-control" (blur)="previsualizarPrestamo()"
                     [ngClass]="{ 'is-invalid': (prestamo['interes'].touched || submitted) && prestamo['interes'].errors }">
 
@@ -123,6 +128,119 @@
             </div>
         </div>
     </form>
+</p-dialog>
+
+<p-dialog header="Abonar cuota" [(visible)]="mostrarAbonarCuota" [modal]="true" [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <span class="text-secondary mb-5">
+        A continuación se puede visualizar los datos del préstamo de
+        {{prestamoSelect?.AsociPersona?.GenerPersona?.primer_nombre}}
+        {{prestamoSelect?.AsociPersona?.GenerPersona?.primer_apellido}} y sus respectivos abonos.
+    </span>
+
+    <div class="row mt-2 mb-2">
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-3 text-center">
+            <span class="fw-bold">
+                <i class="pi pi-credit-card mr-2" style="color: green; margin-right: 0.4rem;"></i>
+                Valor préstamo
+            </span>
+            <span style="display:block;">${{(prestamoSelect?.valor_prestamo | number:'1.0-0')}}</span>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-3 text-center">
+            <span class="fw-bold">
+                <i class="pi pi-calendar-clock mr-2" style="color: green; margin-right: 0.4rem;"></i>
+                Cuotas
+            </span>
+            <span style="display:block;">{{prestamoSelect?.cuotas}}</span>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-3 text-center">
+            <span class="fw-bold">
+                <i class="pi pi-info-circle mr-2" style="color: green; margin-right: 0.4rem;"></i>
+                Descripción
+            </span>
+            <span style="display:block;">{{prestamoSelect?.descripcion ? prestamoSelect?.descripcion : 'Sin descripción'}}</span>
+        </div>
+    </div>
+
+    <form [formGroup]="frmAbono">
+
+        <div class="row mt-3">
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                <label for="">Valor del abono</label>
+                <input type="number" formControlName="valor_abono" class="form-control"
+                    [ngClass]="{ 'is-invalid': (abono['valor_abono'].touched || submitted) && abono['valor_abono'].errors }">
+
+                <div *ngIf="abono['valor_abono'].errors && (abono['valor_abono'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="abono['valor_abono'].errors['required']">Campo obligatorio</span>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-8 col-lg-8 mt-2">
+                <label for="">Descripción</label>
+                <input type="text" formControlName="descripcion" class="form-control"
+                    placeholder="Ej: Cuota junio - Capitál e intereses"
+                    [ngClass]="{ 'is-invalid': (abono['descripcion'].touched || submitted) && abono['descripcion'].errors }">
+
+                <div *ngIf="abono['descripcion'].errors && (abono['descripcion'].touched || submitted)"
+                    class="form-text text-danger">
+                    <span *ngIf="abono['descripcion'].errors['required']">Campo obligatorio</span>
+                    <span *ngIf="abono['descripcion'].errors['maxlength']">Máximo 30 carácteres</span>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="row mt-3" *ngIf="prestamoSelect?.AsociAbonos.length == 0">
+        <div class="col-12 text-center">
+            <span class="fw-bold m-3" style="display:block;">
+                <i class="pi pi-megaphone mr-2" style="font-size: 3rem; color: gray"></i>
+            </span>
+            <span style="display:block;">Aún no se han registrado abonos al préstamo</span>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="prestamoSelect?.AsociAbonos.length > 0">
+        <p-table #dtAb [value]="prestamoSelect.AsociAbonos" styleClass="p-datatable-striped" >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th>Descripción</th>
+                    <th>Valor abono</th>
+                    <th>Opciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-abono let-i="rowIndex">
+                <tr>
+                    <td class="text-center">{{i + 1}}</td>
+                    <td>{{abono.descripcion}}</td>
+                    <td>${{(abono.valor_abono | number: '1.0-0')}}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger" pTooltip="Eliminar"
+                            (click)="eliminarAbono(i, abono.id_abono)">
+                            <img src="{{cdn}}images/eliminar.svg" alt="" class="icono-lateral">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="row pt-5">
+        <div class="col-12 d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-success" (click)="guardarAbono()">
+                <img src="{{cdn}}images/formulacion_proyecto_inverse.svg" alt="" class="icono-lateral">
+                Guardar
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="mostrarAbonarCuota = false">
+                <img src="{{cdn}}images/plan_desarrollo_inverse.svg" alt="" class="icono-lateral">
+                Cerrar
+            </button>
+        </div>
+    </div>
 </p-dialog>
 
 <p-dialog header="Nuevo prestamo" [(visible)]="mostrarNuevoPrestamo" [modal]="true" [style]="{ width: '50vw' }"
@@ -168,7 +286,7 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-3">
-                <label for="">Interés</label>
+                <label for="">Interés (%)</label>
                 <input type="number" formControlName="interes" class="form-control" (blur)="previsualizarPrestamo()"
                     [ngClass]="{ 'is-invalid': (prestamo['interes'].touched || submitted) && prestamo['interes'].errors }">
 

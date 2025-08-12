@@ -28,10 +28,22 @@ export class ListadoPrestamosService {
         let ruta = [this.ApiUrl, 'createNuevoPrestamo'].join('/');
         return this.http.post(ruta, {"prestamo": prestamo});
     }
-
+    
     inactivarPrestamo(prestamo: any): Observable<any> {
         let ruta = [this.ApiUrl, 'inactivarPrestamo'].join('/');
         return this.http.put(ruta, {"prestamo": prestamo});
     }
-
+    
+    createAbonoPrestamo(abono: any): Observable<any> {
+        let ruta = [this.ApiUrl, 'createAbonoPrestamo'].join('/');
+        return this.http.post(ruta, {"abono": abono});
+    }
+    
+    inactivarAbono(idAbono: number): Observable<any> {
+        let ruta = [this.ApiUrl, 'inactivarAbono'].join('/');
+        return this.http.put(ruta, {"idAbono": idAbono});
+    }
+    
+    
+    
 }

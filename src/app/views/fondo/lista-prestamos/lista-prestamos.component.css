@@ -1,3 +1,7 @@
 :host ::ng-deep .p-inputtext {
     padding: 0.375rem 0.75rem !important;
 }
+
+table tr {
+    border-bottom: 1px black;
+}

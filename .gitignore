@@ -40,4 +40,4 @@ testem.log
 Thumbs.db
 
 #config
-#src/app/app-core/services/app-admin/configuracion/config.ts
+src/app/app-core/services/app-admin/configuracion/config.ts

@@ -1,4 +1,4 @@
-# Proyecto en Angular 18 para el sistema "SAPIENS"
+# Proyecto en Angular 18 para la gestión financiera de un fondo de ahorros
 
 Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 18.1.4.
 
@@ -27,7 +27,6 @@ Para ejecutar este proyecto, asegúrate de tener instaladas las siguientes versi
 
 ### Configurar rutas en el archivo `config.ts`
 - Asigna la ruta del servidor.
-- Define el `modulo_id` del proyecto.
 
 ### Asignar permisos en la base de datos
 - Crea los módulos y submódulos en la tabla `segur_nivel`.
